@@ -125,52 +125,52 @@ const Info = () => {
           <div>Bandwidth</div>
         </div>
 
-        <div className=" m-4 h-[228px] bg-white flex p-4 flex-wrap font-medium">
+        <div className=" m-4 h-[228px] bg-white flex p-4 flex-wrap">
           <div className="w-1/4">
-            <div>Device Serial</div>
+            <div className="font-medium">Device Serial</div>
             <div>{appliance.serialNo}</div>
           </div>
           <div className="w-1/4">
-            <div>Location</div>
+            <div className="font-medium">Location</div>
             <div>{appliance.theatreName}</div>
           </div>
           <div className="w-1/4">
-            <div>City</div>
+            <div className="font-medium">City</div>
             <div>
               {appliance.location.city},{appliance.location.state},
               {appliance.location.country}
             </div>
           </div>
           <div className="w-1/4">
-            <div>ISP Payment Responsibility</div>
+            <div className="font-medium">ISP Payment Responsibility</div>
             <div>{appliance.ispPaymentResponsibility}</div>
           </div>
           <div className="w-1/4">
-            <div>Bandwidth</div>
+            <div className="font-medium">Bandwidth</div>
             <div>{appliance.bandwidth}</div>
           </div>
           <div className="w-1/4">
-            <div>Avg Bandwidth</div>
+            <div className="font-medium">Avg Bandwidth</div>
             <div>{appliance.avgBandwidth}</div>
           </div>
           <div className="w-1/4">
-            <div>Plan Start Date</div>
+            <div className="font-medium">Plan Start Date</div>
             <div>{appliance.planStartDate}</div>
           </div>
           <div className="w-1/4">
-            <div>Billing Cycle</div>
+            <div className="font-medium">Billing Cycle</div>
             <div>{appliance.billingCycle}</div>
           </div>
           <div className="w-1/4">
-            <div>Download Status</div>
+            <div className="font-medium">Download Status</div>
             <div>{appliance.downloadStatus}</div>
           </div>
           <div className="w-1/4">
-            <div>OS Version</div>
+            <div className="font-medium">OS Version</div>
             <div>{appliance.osVersion}</div>
           </div>
           <div className="w-1/4">
-            <div>Storage Available</div>
+            <div className="font-medium">Storage Available</div>
             <div>{appliance.storage}</div>
           </div>
         </div>
