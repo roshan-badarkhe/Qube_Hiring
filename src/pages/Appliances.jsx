@@ -58,7 +58,7 @@ const Appliances = () => {
           </div>
         </div>
 
-        <Table1 data={data} />
+        <Table1 data={data} setData={setData} />
       </div>
     </div>
   );

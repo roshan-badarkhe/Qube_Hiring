@@ -6,12 +6,12 @@ import { useNavigate } from "react-router-dom";
 const Table = ({ data }) => {
   const navigate = useNavigate();
   const [entries, setEntries] = useState(6);
+  const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = Math.ceil(data.length / entries);
 
   const handleChangePage = (event, newPage) => {
     setCurrentPage(newPage);
-    console.log("Current page:", newPage);
+    // console.log("Current page:", newPage);
   };
 
   function handleClick(serialNo) {
@@ -20,34 +20,64 @@ const Table = ({ data }) => {
 
   useEffect(() => {
     currentPage > totalPages ? setCurrentPage(1) : "";
-  }, [entries]);
+  }, [entries, search]);
+
+  const datacopy = data.filter((item) => {
+    return search.toLowerCase() === ""
+      ? item
+      : item.serialNo.toLowerCase().includes(search.toLowerCase()) ||
+          item.theatreName.toLowerCase().includes(search.toLowerCase());
+  });
+
+  const totalPages = Math.ceil(datacopy.length / entries);
 
   return (
     <div className="bg-white">
       <div className="bg-white h-fit w-full rounded-t-lg p-4 flex justify-between">
-        <div className="relative border border-gray-200 rounded-lg w-full max-w-56">
-          <input
-            type="text"
-            className="rounded-md p-1 w-full"
-            placeholder="Search"
-          />
+        <div className="flex gap-4 items-center">
+          <div className="relative border border-gray-200 rounded-lg w-full max-w-56">
+            <input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              type="text"
+              className="rounded-md p-1 w-full"
+              placeholder="Search"
+            />
 
-          <button type="submit" className="absolute right-2 top-2">
+            <button type="submit" className="absolute right-2 top-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                className="w-4 h-4"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+                />
+              </svg>
+            </button>
+          </div>
+          <div className="flex gap-1 items-center bg-gray-300 px-2 py-0.5 rounded-lg">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
-              strokeWidth="1.5"
+              strokeWidth={1.5}
               stroke="currentColor"
-              className="w-4 h-4"
+              className="size-4"
             >
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+                d="M6 13.5V3.75m0 9.75a1.5 1.5 0 0 1 0 3m0-3a1.5 1.5 0 0 0 0 3m0 3.75V16.5m12-3V3.75m0 9.75a1.5 1.5 0 0 1 0 3m0-3a1.5 1.5 0 0 0 0 3m0 3.75V16.5m-6-9V3.75m0 3.75a1.5 1.5 0 0 1 0 3m0-3a1.5 1.5 0 0 0 0 3m0 9.75V10.5"
               />
             </svg>
-          </button>
+            Filter
+          </div>
         </div>
         <div className="flex gap-4">
           <div className="flex items-center gap-2">
@@ -89,7 +119,7 @@ const Table = ({ data }) => {
           </tr>
         </thead>
         <tbody className="align-text-top">
-          {data
+          {datacopy
             .slice(currentPage * entries - entries, currentPage * entries)
             .map((el, index) => (
               <tr key={index} className=" hover:bg-gray-100 text-gray-900">
