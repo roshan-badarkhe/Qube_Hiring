@@ -235,7 +235,11 @@ app.get("/api/v1/appliances", (req, res) => {
 app.get("/api/v1/appliance/:applianceId/info", (req, res) => {
   const applianceId = req.params.applianceId;
   const appliance = appliances.filter((el) => el.serialNo === applianceId);
-  res.send(appliance[0]);
+  if (appliance.length !== 0) {
+    res.status(200).send(appliance[0]);
+  } else {
+    res.status(404).send();
+  }
 });
 
 app.listen(port, () => {
