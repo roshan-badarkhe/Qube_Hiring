@@ -2,12 +2,23 @@ import { Pagination } from "@mui/material";
 import { useEffect, useState } from "react";
 import Status from "./Status";
 import { useNavigate } from "react-router-dom";
+import Dropdown from "./Dropdown";
 
 const Table = ({ data }) => {
   const navigate = useNavigate();
   const [entries, setEntries] = useState(6);
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+
+  const [selectedOptions, setSelectedOptions] = useState([]);
+
+  const handleDropdownChange = (option) => {
+    if (selectedOptions.includes(option)) {
+      setSelectedOptions(selectedOptions.filter((item) => item !== option));
+    } else {
+      setSelectedOptions([...selectedOptions, option]);
+    }
+  };
 
   const handleChangePage = (event, newPage) => {
     setCurrentPage(newPage);
@@ -29,7 +40,23 @@ const Table = ({ data }) => {
           item.theatreName.toLowerCase().includes(search.toLowerCase());
   });
 
-  const totalPages = Math.ceil(datacopy.length / entries);
+  const displayData = datacopy.filter((item) => {
+    if (
+      selectedOptions.includes("Online") &&
+      selectedOptions.includes("Offline")
+    ) {
+      return item;
+    }
+    if (selectedOptions.includes("Online")) {
+      return item.deviceStatus === "Online";
+    }
+    if (selectedOptions.includes("Offline")) {
+      return item.deviceStatus === "Offline";
+    }
+    return item;
+  });
+
+  const totalPages = Math.ceil(displayData.length / entries);
 
   return (
     <div className="bg-white">
@@ -40,6 +67,8 @@ const Table = ({ data }) => {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               type="text"
+              name="search"
+              id="search"
               className="rounded-md p-1 w-full"
               placeholder="Search"
             />
@@ -61,23 +90,11 @@ const Table = ({ data }) => {
               </svg>
             </button>
           </div>
-          <div className="flex gap-1 items-center bg-gray-300 px-2 py-0.5 rounded-lg">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="size-4"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M6 13.5V3.75m0 9.75a1.5 1.5 0 0 1 0 3m0-3a1.5 1.5 0 0 0 0 3m0 3.75V16.5m12-3V3.75m0 9.75a1.5 1.5 0 0 1 0 3m0-3a1.5 1.5 0 0 0 0 3m0 3.75V16.5m-6-9V3.75m0 3.75a1.5 1.5 0 0 1 0 3m0-3a1.5 1.5 0 0 0 0 3m0 9.75V10.5"
-              />
-            </svg>
-            Filter
-          </div>
+          <Dropdown
+            options={["Online", "Offline"]}
+            onChange={handleDropdownChange}
+            selectedOptions={selectedOptions}
+          />
         </div>
         <div className="flex gap-4">
           <div className="flex items-center gap-2">
@@ -119,7 +136,7 @@ const Table = ({ data }) => {
           </tr>
         </thead>
         <tbody className="align-text-top">
-          {datacopy
+          {displayData
             .slice(currentPage * entries - entries, currentPage * entries)
             .map((el, index) => (
               <tr key={index} className=" hover:bg-gray-100 text-gray-900">
