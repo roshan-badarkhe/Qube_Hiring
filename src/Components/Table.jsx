@@ -31,7 +31,7 @@ const Table = ({ data }) => {
 
   useEffect(() => {
     currentPage > totalPages ? setCurrentPage(1) : "";
-  }, [entries, search]);
+  }, [entries, search, selectedOptions]);
 
   const datacopy = data.filter((item) => {
     return search.toLowerCase() === ""
