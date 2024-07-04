@@ -1,11 +1,17 @@
-import { useState } from "react";
-
-const Dropdown = ({ options, onChange, selectedOptions }) => {
+import { useCallback, useState } from "react";
+import { memo } from "react";
+// const Greeting = memo(function Greeting({ name })
+const Dropdown = memo(function Dropdown({
+  options,
+  onChange,
+  selectedOptions,
+}) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleCheckboxChange = (option) => {
+  console.log("Dropdown Render");
+  const handleCheckboxChange = useCallback((option) => {
     onChange(option);
-  };
+  }, []);
 
   return (
     <div className="relative">
@@ -50,6 +56,6 @@ const Dropdown = ({ options, onChange, selectedOptions }) => {
       )}
     </div>
   );
-};
+});
 
 export default Dropdown;
